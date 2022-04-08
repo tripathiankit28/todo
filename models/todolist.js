@@ -1,6 +1,11 @@
-const mongoose = require('mongoose');
-var todolist = mongoose.model('todolist',{
-    task : { type: String },
-    status : { type: String }
-});
-module.exports = todolist;
+const mongoose=require('mongoose');
+//defining schema
+
+const todoSchema = new mongoose.Schema({
+    task:{type:String},
+    status:{type:Boolean,
+    default:false}
+})
+
+const TodoModel = mongoose.model("todolist",todoSchema)
+module.exports=TodoModel;

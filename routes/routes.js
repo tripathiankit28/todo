@@ -1,12 +1,11 @@
-const express = require('express');
-const todoController = require('../controllers/todolistController');
+const express= require('express');
+const router = express.Router();
+const TodoController =require('../controllers/todolistController');
 
-
-var router=express.Router();
-
-router.get('/todoitems',todoController.viewAllTask)
-router.post('/add',todoController.addTask)
-router.delete('/delete/:id',todoController.deleteTask)
-router.put('/update',todoController.updateTask)
+router.get('/',TodoController.getAllDoc)
+router.post('/',TodoController.createDoc)
+router.get('/:id',TodoController.getSingleDocById)
+router.patch('/:id',TodoController.updateDocById)
+router.delete('/:id',TodoController.deleteDocById)
 
 module.exports=router;

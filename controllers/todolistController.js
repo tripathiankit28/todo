@@ -1,51 +1,59 @@
-const express = require('express');
-const todolist = require('../models/todolist');
+const TodoModel=require('../models/todolist.js');
 
-
-exports.viewAllTask=async(req,res)=>{
-    try{
-    var response = await todolist.find()
-      res.send(response)
+class TodoController {
+    static createDoc = async (req,res) =>{
+        try{
+            const {response}=req.body
+            console.log(response)
+            const doc=new TodoModel({
+                task:response
+            })
+            const result = await doc.save()
+            res.send(result)
+            console.log(result)
+        }
+        catch(error){
+            console.log(error)
+        }
     }
-    
-    catch(err){
-        console.log(err);
+    static getAllDoc = async(req,res) =>{
+        try{
+            const result=await TodoModel.find()
+            res.send(result)
+        }
+        catch(error){
+            console.log(error)
+        }
     }
-
-    
-
-exports.addTask=async(req,res)=>{
-    try{
-    let todo = new todolist({
-      task : req.body.task,
-      status : req.body.status
-    });
-    var response = await todo.save()
-      res.send(response);
+    static getSingleDocById = async(req,res)=>{
+        try{
+            const result=await TodoModel.findById(req.params.id)
+            res.send(result)
+        }
+        catch(error){
+            console.log(error)
+        }
     }
-    catch(err){
-        console.log(err);
+    static updateDocById = async(req,res)=>{
+        try{
+            const result=await TodoModel.findByIdAndUpdate(req.params.id,req.body)
+            res.send(result)
+    }
+    catch(error){
+        console.log(error)
     }
 }
+    static deleteDocById = async(req,res)=>{
 
-exports.updateTask=async(req,res)=>{
-    try{
-    let todo = {
-        task : req.body.task,
-        status : req.body.status
-    };
-    var response = await todolist.findByIdAndUpdate(req.body.id, {$set : todo}, {new : true})
-        res.send(response);
+        try{
+           const params=req.query;
+           console.log(params.id);
+            const result=await TodoModel.findByIdAndDelete(params.id)
+            res.send(result)
     }
-    catch(err){
-     console.log(err);
-   
- }
+    catch(error){
+        console.log(error)
+    }
+    }
 }
-
-exports.deleteTask=async(req,res)=>{
-   var response = await todolist.findByIdAndDelete(req.body.id)
-   res.send(response);
-}
-
-}
+module.exports=TodoController;
