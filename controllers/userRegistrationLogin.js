@@ -36,7 +36,7 @@ const userRegister=async(req,res,next)=>{
 const loginUser = async(req,res,next)=>{
     const {email,password}=req.body;
     const exists=await UserModel.findOne({email})
-    if(!exits){
+    if(!exists){
         return res.json({
             message:'User is not registered',
         })
@@ -56,7 +56,7 @@ const loginUser = async(req,res,next)=>{
 }
 const jwtValidation=async(req,res,next)=>{
     const jwtToken=req.body.token
-    jwt.verify(jwtToken),SECRET_KEY,(err,decoded)=>{
+    jwt.verify(jwtToken,SECRET_KEY,(err,decoded)=>{
         if(decoded){
             return res.json({
                 jwtToken:createJwt(decoded._id)
